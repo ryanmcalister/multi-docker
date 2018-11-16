@@ -3,34 +3,34 @@ services:
   - docker
 
 before_install:
-  - docker build -t ryanmcalister/react-test -f ./client/Dev.Dockerfile ./client
+  - docker build -t rymc26/react-test -f ./client/Dev.Dockerfile ./client
 
 script:
-  - docker run ryanmcalister/react-test npm test -- --coverage
+  - docker run rymc26/react-test npm test -- --coverage
 
 after_success:
-  - docker build -t ryanmcalister/multi-client ./client
-  - docker build -t ryanmcalister/multi-nginx ./nginx
-  - docker build -t ryanmcalister/multi-server ./server
-  - docker build -t ryanmcalister/multi-worker ./worker
+  - docker build -t rymc26/multi-client ./client
+  - docker build -t rymc26/multi-nginx ./nginx
+  - docker build -t rymc26/multi-server ./server
+  - docker build -t rymc26/multi-worker ./worker
   # Log in to the docker CLI
   - echo $DOCKER_PASSWORD | docker login -u "$DOCKER_ID" --password-stdin
   # Take these images and push to docker hub
-  - docker push ryanmcalister/multi-client
-  - docker push ryanmcalister/multi-nginx
-  - docker push ryanmcalister/multi-server
-  - docker push ryanmcalister/multi-worker
+  - docker push rymc26/multi-client
+  - docker push rymc26/multi-nginx
+  - docker push rymc26/multi-server
+  - docker push rymc26/multi-worker
 
-deploy:
-  provider: elasticbeanstalk
-  regions: us-east-1
-  app: multi-docker
-  env: MultiDocker-env
-  bucket_name: xxx
-  bucket_path: docker-multi
-  on:
-    branch: master
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key:
-    secure: $AWS_SECRET_KEY
+#deploy:
+#  provider: elasticbeanstalk
+#  regions: us-east-1
+#  app: multi-docker
+#  env: MultiDocker-env
+#  bucket_name: xxx
+#  bucket_path: docker-multi
+#  on:
+#    branch: master
+#  access_key_id: $AWS_ACCESS_KEY
+#  secret_access_key:
+#    secure: $AWS_SECRET_KEY
   
